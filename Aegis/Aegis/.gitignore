@@ -1,0 +1,4 @@
+*.swp
+bin/x86/*
+obj/*
+!bin/x86/GameBase.*

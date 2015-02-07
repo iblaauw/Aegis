@@ -1,0 +1,631 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>GameBase</name>
+    </assembly>
+    <members>
+        <member name="T:GameBase.Game">
+            <summary>
+            This is the highest level object for the GameBase framework. It inherits from the XNA Game class, allowing it to be used like a normal XNA game.
+            <para>To use: replace lines from main in the normal Program.cs file so it looks something like this - </para>
+            <para>    IGameStateManager manager = new ... </para>
+            <para>     using (GameBase.Game game = new GameBase.Game(manager, ...)) </para>
+            <para>    { </para>
+            <para>        game.Run(); </para>
+            <para>    } </para>
+            </summary>
+        </member>
+        <member name="M:GameBase.Game.CreateMap(System.Int32,System.Int32)">
+            <summary>
+            Create a GameMap that can then be used by the map.
+            </summary>
+        </member>
+        <member name="M:GameBase.Game.SwitchToMap(GameBase.GameMap,System.Boolean)">
+            <summary>
+            Start displaying the given map.
+            </summary>
+            <param name="unloadLastMap"> If true (default), the current map will unload all of its XNA content.</param>
+        </member>
+        <member name="M:GameBase.Game.#ctor(GameBase.IGameStateManager,System.Int32,System.Int32,System.Boolean)">
+            <summary>
+            Create a Game object that notifies the given IGameStateManager
+            </summary>
+        </member>
+        <member name="M:GameBase.Game.Initialize">
+            <summary>
+            Allows the game to perform any initialization it needs to before starting to run.
+            This is where it can query for any required services and load any non-graphic
+            related content.  Calling base.Initialize will enumerate through any components
+            and initialize them as well.
+            </summary>
+        </member>
+        <member name="M:GameBase.Game.UnloadContent">
+            <summary>
+            UnloadContent will be called once per game and is the place to unload
+            all content.
+            </summary>
+        </member>
+        <member name="P:GameBase.Game.BackgroundColor">
+            <summary>
+            Get and set the default background color that is displayed.
+            </summary>
+        </member>
+        <member name="P:GameBase.Game.CurrentMap">
+            <summary>
+            Get the current GameMap that is being used
+            </summary>
+        </member>
+        <member name="P:GameBase.Game.WindowWidth">
+            <summary>
+            Gets or sets the width of the main window. 
+            This ideally shouldn't be used to set unless you are resizing. Use the Game constructor instead.
+            </summary>
+        </member>
+        <member name="P:GameBase.Game.WindowHeight">
+            <summary>
+            Gets or sets the height of the main window. 
+            This ideally shouldn't be used to set unless you are resizing. Use the Game constructor instead.
+            </summary>
+        </member>
+        <member name="P:GameBase.Game.ContentDirectory">
+            <summary>
+            Get or Set the directory that all the XNA Content lives in.
+            By default this is "Content"
+            </summary>
+        </member>
+        <member name="F:GameBase.GameMap.status">
+            <summary>
+            The status of the map.
+            </summary>
+        </member>
+        <member name="M:GameBase.GameMap.#ctor(System.IServiceProvider,System.Int32,System.Int32,System.String)">
+            <summary>
+            Create a new Map. Only should be used from the main Game class.
+            </summary>
+            <param name="serviceProvider">Get this by doing: Content.ServiceProvider</param>
+            <param name="backgroundName">The path to the content to be used for a background. Use null if there is none.</param>
+            <param name="contentRootDirectory">The path to the root of where content will be found. Use null for default.</param>
+        </member>
+        <member name="M:GameBase.GameMap.AddObject(GameBase.GameObject)">
+            <summary>
+            Add a GameObject to the map. Unless a GameObject is added to a map, it will not execute.
+            NOTE: the object will not actually show up until the next game cycle. This should not usually affect anything.
+            </summary>
+        </member>
+        <member name="M:GameBase.GameMap.AddObject_help(GameBase.GameObject)">
+            <summary>
+            Actually adds the objects
+            </summary>
+        </member>
+        <member name="M:GameBase.GameMap.AddMultiple(System.Collections.Generic.IEnumerable{GameBase.GameObject})">
+            <summary>
+            Adds a collection of GameObjects to the map. For the moment this simply call AddObject on the whole collection.
+            </summary>
+        </member>
+        <member name="M:GameBase.GameMap.RemoveObject(GameBase.GameObject)">
+            <summary>
+            Deletes a GameObject from the map.
+            </summary>
+        </member>
+        <member name="M:GameBase.GameMap.Update(Microsoft.Xna.Framework.GameTime)">
+            <summary>
+            Actually executes a single step of the map, causing things to move and function. 
+            This should be called in the Update function of the main Game class.
+            </summary>
+        </member>
+        <member name="M:GameBase.GameMap.Draw(Microsoft.Xna.Framework.GameTime)">
+            <summary>
+            Actually draw the map and all the objects in it.
+            </summary>
+        </member>
+        <member name="M:GameBase.GameMap.UnloadAll">
+            <summary>
+            If you are not using the map, and will not for a long time, then call this to unload all content.
+            By default this sets the status to disabled. Be sure to re-enable it before you use it again.
+            If this gets called, you MUST call LoadAll before using the map again.
+            </summary>
+        </member>
+        <member name="M:GameBase.GameMap.LoadAll">
+            <summary>
+            Loads all content. 
+            </summary>
+        </member>
+        <member name="M:GameBase.GameMap.CollidingWith``1(GameBase.GameObject)">
+            <summary>
+            This will return a list of GameObjects in the map that are currently colliding with the given object, according to their masks.
+            It will only check GameObjects with a type of T (or inherit T).
+            NOTES: A GameObject with no CollisionMask will never be returned
+                If obj has no CollisionMask, an empty list will be returned
+                A GameObject that has a status of DISABLED will never be returned
+                A GameObject in a different Map will never be returned
+                The same object (or where obj.Equals() is true) will never be returned
+            </summary>
+            <typeparam name="T">The type of GameObject that will be checked. T must inherit from GameObject!</typeparam>
+            <returns>A list of all the objects of type T considered colliding with obj.</returns>
+        </member>
+        <member name="P:GameBase.GameMap.Views">
+            <summary>
+            List of MapView objects to be drawn. If this is null or empty, the game will attempt to draw the entire map.
+            </summary>
+        </member>
+        <member name="P:GameBase.GameMap.Width">
+            <summary>
+            The width of the map in pixels.
+            </summary>
+        </member>
+        <member name="P:GameBase.GameMap.Height">
+            <summary>
+            The height of the map in pixels.
+            </summary>
+        </member>
+        <member name="T:GameBase.GameMap.STATUS">
+            <summary>
+            This enum represents different status options:
+            Running = normal, PAUSED = no update, still draws, DISABLED = no update or draw
+            </summary>
+        </member>
+        <member name="T:GameBase.GameObject">
+            <summary>
+            This class is the meat of how GameBase works. Every object that will be drawn on the screen should inherit from this class.
+            It provides a framework for updating, drawing, collision detection, etc.
+            In order for a GameObject to be active it should be added to a GameMap.
+            </summary>
+        </member>
+        <member name="F:GameBase.GameObject.map">
+            <summary>
+            This will be automatically set to the owning map... do not modify!
+            </summary>
+        </member>
+        <member name="F:GameBase.GameObject.status">
+            <summary>
+            The status of this GameObject. A status of INVISIBLE will prevent drawing. A status of DISABLED will prevent updating or drawing.
+            </summary>
+        </member>
+        <member name="F:GameBase.GameObject.position">
+            <summary>
+            The coordinates of the GameObject.
+            </summary>
+        </member>
+        <member name="F:GameBase.GameObject.mask">
+            <summary>
+            A mask can be viewed as a sort of hit-box for objects: when detecting collisions, two masks will be checked for overlap.
+            At the moment only 2 masks are provided: RectangleMask and CircleMask. However, a custom mask can be made as long as it
+                implements the interface Mask.
+            </summary>
+        </member>
+        <member name="F:GameBase.GameObject.sprite">
+            <summary>
+            A sprite is the image or animation that shows up on the screen, representing the object.
+            At the moment there is only one sprite class: Sprite2d. However, custom ones that implement the Sprite class can be made.
+            </summary>
+        </member>
+        <member name="M:GameBase.GameObject.UpdateObject(Microsoft.Xna.Framework.GameTime)">
+            <summary>
+            Required to be overriden. This gives the object functionality, use it to move the object, make it do actions, etc. It will be repeatedly called ~30 times per second.
+            Do not call this function manually! Instead call Update.
+            </summary>
+        </member>
+        <member name="M:GameBase.GameObject.LoadObjectContent(Microsoft.Xna.Framework.Content.ContentManager)">
+            <summary>
+            Required to be overriden. This should load any extra content that the object will use.
+            Do not call this function manually! Instead call LoadContent.
+            NOTE: Not necessary to load the sprite content here, that is done automatically.
+            </summary>
+        </member>
+        <member name="M:GameBase.GameObject.DrawObject(GameBase.GameVector,Microsoft.Xna.Framework.GameTime,Microsoft.Xna.Framework.Graphics.SpriteBatch)">
+            <summary>
+            Draws the object simply at the given position. 
+            By default this calls sprite.Draw(). Override this if you want to make custom simple drawing, or custom effects (think drawing text or numbers).
+            Do not call this manually! Instead call Draw.
+            NOTE: If you are using GameViews, you must override DrawObjectView as well.
+            </summary>
+        </member>
+        <member name="M:GameBase.GameObject.DrawObjectView(GameBase.GameVector,Microsoft.Xna.Framework.GameTime,Microsoft.Xna.Framework.Graphics.SpriteBatch,Microsoft.Xna.Framework.Rectangle)">
+            <summary>
+            Draws the object in the bounds of the given view at the given offset. 
+            By default this calls sprite.DrawPart(). Override this to define custom drawing or effects when you are using GameViews.
+            Do not call this manually! Instead call DrawView.
+            </summary>
+            <param name="bounds">
+            Rectangle defining where the view is in game terms. It is expected that if the object is outside this rectangle, it will not be drawn,
+            and if it overlaps, only the correct portion will be drawn.
+            </param>
+        </member>
+        <member name="M:GameBase.GameObject.OnDestroy">
+            <summary>
+            This is called right before a GameObject is removed from a Map.
+            By default this does nothing. Override this to do custom functionality (like clean up resources, handle sub-objects, etc.)
+            </summary>
+        </member>
+        <member name="M:GameBase.GameObject.Update(Microsoft.Xna.Framework.GameTime)">
+            <summary>
+            This updates the object further and gives it functionality. This calls UpdateObject.
+            It is already called automatically by GameMap, no need to call it manually (though it can be done if desired).
+            </summary>
+        </member>
+        <member name="M:GameBase.GameObject.LoadContent(Microsoft.Xna.Framework.Content.ContentManager)">
+            <summary>
+            This loads any of the objects content into memory. This calls LoadObjectContent.
+            It is already called automatically by GameMap, no need to call it manually (though it can be done if desired).
+            </summary>
+        </member>
+        <member name="M:GameBase.GameObject.Draw(Microsoft.Xna.Framework.GameTime,Microsoft.Xna.Framework.Graphics.SpriteBatch)">
+            <summary>
+            This draws the object simply. This calls DrawObject.
+            It is already called automatically by GameMap, no need to call it manually (though it can be done if desired).
+            </summary>
+        </member>
+        <member name="M:GameBase.GameObject.DrawView(GameBase.GameVector,Microsoft.Xna.Framework.GameTime,Microsoft.Xna.Framework.Graphics.SpriteBatch,Microsoft.Xna.Framework.Rectangle)">
+            <summary>
+            This draws the object with the given offset and view boundaries. This calls DrawObjectView.
+            It is already called automatically by GameMap, no need to call it manually (though it can be done if desired).
+            </summary>
+        </member>
+        <member name="P:GameBase.GameObject.CollisionMask">
+            <summary>
+            A mask can be viewed as a sort of hit-box for objects: when detecting collisions, two masks will be checked for overlap.
+            At the moment only 2 masks are provided: RectangleMask and CircleMask. However, a custom mask can be made as long as it
+                implements the interface Mask.
+            </summary>
+        </member>
+        <member name="P:GameBase.GameObject.Depth">
+            <summary>
+            Determines when the object is drawn. If this object has more depth than another object,
+                it will be drawn underneath the other object.
+            </summary>
+        </member>
+        <member name="P:GameBase.GameObject.StaticView">
+            <summary>
+            When true, this.position refers exactly to where the object is drawn on the screen. Makes it unaffected by MapView.
+            Use this to make objects act like a HUD.
+            NOTE: An object with StaticView will always be drawn as on-top of a non-static object, regardless of Depth. Really, static
+                and non-static are not meant to interact: at the very least collision detection will go beserk... 
+                However, Depth works normally between two static objects.
+            </summary>
+        </member>
+        <member name="P:GameBase.GameObject.Sprite">
+            <summary>
+            Get the sprite of this object.
+            A sprite is the image or animation that shows up on the screen, representing the object.
+            At the moment there is only one sprite class: Sprite2d. However, custom ones that implement the Sprite class can be made.
+            </summary>
+        </member>
+        <member name="T:GameBase.GameObject.STATUS">
+            <summary>
+            Represents the status of a GameObject
+            NORMAL = normal, INVISIBLE = not drawn but still updated, DISABLED = not being updated or drawn
+            </summary>
+        </member>
+        <member name="T:GameBase.GameState">
+            <summary>
+            GameState contains some global objects that are referrenced by many things, such as game dimensions, input, etc.
+            </summary>
+        </member>
+        <member name="M:GameBase.GameState.Initialize(Microsoft.Xna.Framework.GraphicsDeviceManager,System.Boolean)">
+            <summary>
+            This must be called from the Initialize function in your main Game class, or GameState may not function.
+            </summary>
+            <param name="deviceManager">In the main Game class, this will just be "graphics".</param>
+        </member>
+        <member name="M:GameBase.GameState.GetGamePad(Microsoft.Xna.Framework.PlayerIndex)">
+            <summary>
+            Gets all input data about the given player GamePad.
+            </summary>
+        </member>
+        <member name="P:GameBase.GameState.Keyboard">
+            <summary>
+            Gets the input data about the Keyboard
+            </summary>
+        </member>
+        <member name="P:GameBase.GameState.Mouse">
+            <summary>
+            Gets the input data about the Mouse
+            </summary>
+        </member>
+        <member name="P:GameBase.GameState.ViewPortWidth">
+            <summary>
+            Gets how wide the drawing space is in pixels. This is the screen size if fullscreen, otherwise the window size.
+            </summary>
+        </member>
+        <member name="P:GameBase.GameState.ViewPortHeight">
+            <summary>
+            Gets how high the drawing space is in pixels. This is the screen size if fullscreen, otherwise the window size.
+            </summary>
+        </member>
+        <member name="P:GameBase.GameState.AspectRatio">
+            <summary>
+            Gets the aspect ration the drawing space is using. This is for the screen if fullscreen, otherwise for the window.
+            </summary>
+        </member>
+        <member name="P:GameBase.GameState.Is3d">
+            <summary>
+            Is this a 3d game? If true, coordinates have 3 components: X,Y,Z. Otherwise they have 2: X,Y.
+            </summary>
+        </member>
+        <member name="T:GameBase.GameVector">
+            <summary>
+            This class reduces down to Vector2 or Vector3 depending on if the game is 2d or 3d.
+            </summary>
+        </member>
+        <member name="T:GameBase.Graphics.Background">
+            <summary>
+            This is a game object that functions as a basic background. Inherits from GameObject.
+            It can also do a tiling background: takes an image and repeats it across the whole map.
+            NOTE: The default Depth is 100. This can be changed like normal, through the Depth property.
+            </summary>
+        </member>
+        <member name="M:GameBase.Graphics.Background.#ctor(System.String,System.Boolean)">
+            <summary>
+            Create a new background. This will become the background of the map which it is added to.
+            </summary>
+            <param name="imageName">The filename of the image, from the content section. Preferrably without extensions.</param>
+            <param name="tiled">If tiled is true, then the image given will be repeated to fill up the whole map.
+                Otherwise the image is just drawn once, in the upper left corner.</param>
+        </member>
+        <member name="P:GameBase.Graphics.Background.Tiled">
+            <summary>
+            If Tiled is true, then background's image will be repeated to fill up the whole map.
+                Otherwise the image is just drawn once, in the upper left corner.
+            </summary>
+        </member>
+        <member name="T:GameBase.Graphics.CircleMask">
+            <summary>
+            Basic circle (not oval) mask. Implements the Mask interface. Note that this is 2d. For the 3d see the (coming soon) SphereMask.
+            </summary>
+        </member>
+        <member name="T:GameBase.Graphics.Mask">
+            <summary>
+            This interface is used to define where in a Sprite a collision area is defined. (Think hitboxes)
+            A GameObject is required to have a mask if it is testing for collisions.
+            A RectangleMask and CircleMask are built in. In order to make custom shapes, implement this.
+            </summary>
+        </member>
+        <member name="M:GameBase.Graphics.Mask.Intersect(GameBase.GameVector,GameBase.Graphics.Mask,GameBase.GameVector)">
+            <summary>
+            Whether this mask intersects with another mask.
+            NOTE: there may be a corner case in these methods where one mask is completely inside the other. 
+                To help prevent that, make the smaller mask of the two call this.
+            </summary>
+        </member>
+        <member name="M:GameBase.Graphics.Mask.ContainsPoint(GameBase.GameVector,GameBase.GameVector)">
+            <summary>
+            Does the given point lie within the mask?
+            Used for implementing Intersect
+            </summary>
+        </member>
+        <member name="P:GameBase.Graphics.Mask.Height">
+            <summary>
+            The maximum height of the mask. Doesn't need to be exact, but it may break if this is smaller than actual.
+            Just used to help optimize runtime.
+            </summary>
+        </member>
+        <member name="P:GameBase.Graphics.Mask.Width">
+            <summary>
+            The maximum width of the mask. Doesn't need to be exact, but it may break if this is smaller than actual.
+            Just used to help optimize runtime.
+            </summary>
+        </member>
+        <member name="P:GameBase.Graphics.Mask.X">
+            <summary>
+            X and Y are offsets to the center from the top right corner of the sprite.
+            Ex: Rectangle mask, if X,Y are 0,0 then the rectangle will be centered around 0,0 + whatever position the object is at.
+            </summary>
+        </member>
+        <member name="P:GameBase.Graphics.Mask.Y">
+            <summary>
+            X and Y are offsets to the center from the top right corner of the sprite.
+            </summary>
+        </member>
+        <member name="M:GameBase.Graphics.CircleMask.#ctor(System.Int32,System.Int32,System.Int32)">
+            <summary>
+            Create a new circle mask, with center at offset x,y and radius r.
+            </summary>
+        </member>
+        <member name="P:GameBase.Graphics.CircleMask.X">
+            <summary>
+            X and Y are the offsets (from the upper right corner of the sprite) to the center point
+            </summary>
+        </member>
+        <member name="P:GameBase.Graphics.CircleMask.Y">
+            <summary>
+            X and Y are the offsets (from the upper right corner of the sprite) to the center point
+            </summary>
+        </member>
+        <member name="P:GameBase.Graphics.CircleMask.Radius">
+            <summary>
+            The radius of the mask, in pixels.
+            </summary>
+        </member>
+        <member name="P:GameBase.Graphics.CircleMask.Height">
+            <summary>
+            How tall the CircleMask is. This is equivaluent to 2*Radius, or Diameter.
+            </summary>
+        </member>
+        <member name="P:GameBase.Graphics.CircleMask.Width">
+            <summary>
+            How wide the CircleMask is. This is equivaluent to 2*Radius, or Diameter.
+            </summary>
+        </member>
+        <member name="T:GameBase.Graphics.RectangleMask">
+            <summary>
+            A very basic rectangle mask. Implements the Mask interface.
+            Note that this is a 2d only mask. Use the (to come soon) CubeMask class for 3d.
+            </summary>
+        </member>
+        <member name="F:GameBase.Graphics.RectangleMask._x">
+            <summary>
+            Note that X and Y mark the center of the rectangle
+            </summary>
+        </member>
+        <member name="F:GameBase.Graphics.RectangleMask._y">
+            <summary>
+            Note that X and Y mark the center of the rectangle
+            </summary>
+        </member>
+        <member name="M:GameBase.Graphics.RectangleMask.#ctor(System.Int32,System.Int32,System.Int32,System.Int32)">
+            <summary>
+            Creates a basic rectangle mask. Note that all offsets are from the top right corner.
+            </summary>
+        </member>
+        <member name="T:GameBase.IGameStateManager">
+            <summary>
+            This is the high level state manager for a Game object. Use this to manage when the game changes maps or other stuff.
+            </summary>
+        </member>
+        <member name="M:GameBase.IGameStateManager.InitializeFirstMap(GameBase.Game)">
+            <summary>
+            Initialize the first map and give it to the game.
+            </summary>
+        </member>
+        <member name="M:GameBase.IGameStateManager.OnInitialize">
+            <summary>
+            Called on starting, after loading content and the map, but before starting to run
+            </summary>
+        </member>
+        <member name="M:GameBase.IGameStateManager.OnUpdate">
+            <summary>
+            Called when the game is done updating its current map
+            </summary>
+        </member>
+        <member name="M:GameBase.IGameStateManager.OnLoad">
+            <summary>
+            Called when the game is done loading its current map
+            </summary>
+        </member>
+        <member name="M:GameBase.IGameStateManager.OnUnload">
+            <summary>
+            Called when the game is done unloading its current map
+            </summary>
+        </member>
+        <member name="T:GameBase.MapView">
+            <summary>
+            This is what lets only part of a map be drawn at a time. 
+            Really unless you're making something really simple a MapView should be added to GameMap.Views.
+            At the moment this is only meant for 2d games. Will update soon.
+            </summary>
+        </member>
+        <member name="M:GameBase.MapView.#ctor(GameBase.GameVector,GameBase.GameVector,System.Int32,System.Int32)">
+            <summary>
+            Create a new MapView at the given game position, screen position, width, and height.
+            </summary>
+        </member>
+        <member name="M:GameBase.MapView.Draw(System.Collections.Generic.IEnumerable{GameBase.GameObject},Microsoft.Xna.Framework.Graphics.SpriteBatch,Microsoft.Xna.Framework.GameTime)">
+            <summary>
+            Draws the view. Only meant to be used by GameMap!
+            </summary>
+        </member>
+        <member name="M:GameBase.MapView.Move(GameBase.GameVector,System.Int32,System.Int32)">
+            <summary>
+            This will move the view by the X,Y amount specified in offset. It will not move the view outside of the game boundaries.
+            </summary>
+        </member>
+        <member name="P:GameBase.MapView.GamePosition">
+            <summary>
+            The position that the MapView is in the Game. This position signifies the top-left corner.
+            </summary>
+        </member>
+        <member name="P:GameBase.MapView.ScreenPosition">
+            <summary>
+            The position that the MapView is drawn on the screen. This position signifies the top-left corner.
+            </summary>
+        </member>
+        <member name="P:GameBase.MapView.Active">
+            <summary>
+            If Active is false, the View is not drawn.
+            </summary>
+        </member>
+        <member name="T:GameBase.Graphics.Sprite">
+            <summary>
+            This interface is used to provide methods for actually drawing an image/animation. 
+            A GameObject must have a Sprite in order for it to be drawn.
+            </summary>
+        </member>
+        <member name="M:GameBase.Graphics.Sprite.LoadContent(Microsoft.Xna.Framework.Content.ContentManager)">
+            <summary>
+            Actually load the image into memory. Automatically called for the member "sprite" of GameObject.
+            </summary>
+            <param name="content">Get this from the LoadObjectContent in GameObject.</param>
+        </member>
+        <member name="M:GameBase.Graphics.Sprite.Draw(GameBase.GameVector,Microsoft.Xna.Framework.GameTime,Microsoft.Xna.Framework.Graphics.SpriteBatch)">
+            <summary>
+            Use the given spriteBatch to do a basic drawing of the sprite.
+            </summary>
+        </member>
+        <member name="M:GameBase.Graphics.Sprite.DrawPart(GameBase.GameVector,Microsoft.Xna.Framework.GameTime,Microsoft.Xna.Framework.Graphics.SpriteBatch,Microsoft.Xna.Framework.Rectangle)">
+            <summary>
+            Use the given spriteBatch to draw the Sprite with the given source bounds.
+            Main use is in the MapView object.
+            </summary>
+            <param name="bounds">A rectangle specifying the source. 
+                Note that this may be much bigger than or go outside of the area of the image. 
+                Some expectations:
+                    If the sprite is fully contained in bounds, it will be drawn normally
+                    If bounds is completely outside of the sprite, nothing will be drawn.
+                    When there is overlap, no part of the image that doesn't exist will be drawn.
+                </param>
+        </member>
+        <member name="M:GameBase.Graphics.Sprite.StepAnimation">
+            <summary>
+            If the sprite has an animation, this will progress it. Should be called in Update (not Draw, otherwise pause effects will be broken).
+            </summary>
+        </member>
+        <member name="P:GameBase.Graphics.Sprite.Texture">
+            <summary>
+            Only for 2d use. This is the XNA Texture object that will actually be drawn.
+            It will contain more details than what is exposed here.
+            </summary>
+        </member>
+        <member name="P:GameBase.Graphics.Sprite.DrawColor">
+            <summary>
+            The color that the image is blended with when drawn. Default is White (which is no change).
+            </summary>
+        </member>
+        <member name="T:GameBase.Graphics.Sprite2d">
+            <summary>
+            A basic 2-dimensional sprite. Implements interface Sprite.
+            This sprite is used for basic 2d images, as well as 2d strip animations.
+            </summary>
+        </member>
+        <member name="M:GameBase.Graphics.Sprite2d.#ctor(System.String)">
+            <summary>
+            Create a basic 2d sprite with no animation.
+            </summary>
+            <param name="contentName">File name of image (without extension prefered)</param>
+        </member>
+        <member name="M:GameBase.Graphics.Sprite2d.#ctor(System.String,System.Int32,System.Int32,System.Int32)">
+            <summary>
+            Create a basic 2d sprite using strip image for animation.
+            </summary>
+            <param name="contentName">File name of strip image (without extension preferred)</param>
+            <param name="stripHeight">The height of one "square" in the strip</param>
+            <param name="stripLength">The length of one "square" in the strip</param>
+            <param name="stripNumb">The total number of "squares" in the strip</param>
+        </member>
+        <member name="P:GameBase.Graphics.Sprite2d.Texture">
+            <summary>
+            Gets the underlying XNA texture object. This may provide some more details not exposed in this class.
+            </summary>
+        </member>
+        <member name="P:GameBase.Graphics.Sprite2d.UseStrip">
+            <summary>
+            If UseStrip is true, then the underlying image is treated as a strip animation (a larger image that is a 
+            sequence of images that should be played). If not, the entire image is drawn.
+            </summary>
+        </member>
+        <member name="P:GameBase.Graphics.Sprite2d.StripPosition">
+            <summary>
+            If this sprite is strip animated, this will get/set what frame the animation is at.
+            </summary>
+        </member>
+        <member name="P:GameBase.Graphics.Sprite2d.Width">
+            <summary>
+            If UseStrip is true, this is the Width of each frame, not the entire image.
+            </summary>
+        </member>
+        <member name="P:GameBase.Graphics.Sprite2d.Height">
+            <summary>
+            If UseStrip is true, this is the Width of each frame, not the entire image.
+            </summary>
+        </member>
+    </members>
+</doc>
