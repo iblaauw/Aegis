@@ -12,7 +12,7 @@ namespace Aegis
         static void Main(string[] args)
         {
             IGameStateManager manager = new GameManager();
-            using (GameBase.Game game = new GameBase.Game(manager, GameManager.WINDOW_WIDTH, GameManager.WINDOW_HEIGHT))
+            using (GameBase.Game game = new GameBase.Game(manager))
             {
                 game.Run();
             }

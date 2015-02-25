@@ -8,9 +8,7 @@ namespace Aegis
 {
     class GameManager : IGameStateManager
     {
-        public const int WINDOW_WIDTH = 800;
-        public const int WINDOW_HEIGHT = 600;
-
+        const int mapSize = 640;
         GameBase.Game game;
 
         public GameManager()
@@ -20,32 +18,28 @@ namespace Aegis
         public GameMap InitializeFirstMap(Game game)
         {
             this.game = game;
-            GameMap map = game.CreateMap(WINDOW_WIDTH, WINDOW_HEIGHT);
-
-            GameBase.Graphics.Background background = new GameBase.Graphics.Background("background");
-            map.AddObject(background);
-
+            GameMap map = game.CreateMap(mapSize, mapSize);
             return map;
         }
 
         public void OnInitialize()
         {
-            //NOOP
+            throw new NotImplementedException();
         }
 
         public void OnLoad()
         {
-            //NOOP
+            throw new NotImplementedException();
         }
 
         public void OnUnload()
         {
-            //NOOP
+            throw new NotImplementedException();
         }
 
         public void OnUpdate()
         {
-            //NOOP
+            throw new NotImplementedException();
         }
     }
 }
