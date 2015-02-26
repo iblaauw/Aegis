@@ -75,6 +75,7 @@
     <Reference Include="System.Net" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Deck.cs" />
     <Compile Include="GameManager.cs" />
     <Compile Include="pew.cs" />
     <Compile Include="Player.cs" />

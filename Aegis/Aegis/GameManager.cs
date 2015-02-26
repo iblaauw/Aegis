@@ -36,6 +36,7 @@ namespace Aegis
             map.AddObject(new SomeRocks(300, 250));
             map.AddObject(new SomeRocks(1430, 500));
             map.AddObject(new SomeRocks(1050, 972));
+            map.AddObject(new Deck());
 
             return map;
         }
@@ -59,6 +60,18 @@ namespace Aegis
         {
             if (GameState.Keyboard.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.Escape))
                 game.Exit();
+
+            if (GameState.Keyboard.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.C))
+            {
+                GameMap newMap = game.CreateMap(WINDOW_WIDTH, WINDOW_HEIGHT);
+
+                MapView view = new MapView(new GameVector(), new GameVector(), newMap.Width, newMap.Height);
+                newMap.AddObject(new Player(view));
+                newMap.AddObject(new SomeRocks(50, 50));
+
+                GameMap oldMap = game.CurrentMap;
+                game.SwitchToMap(newMap);
+            }
         }
     }
 }
