@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using GameBase;
 using Aegis.Cards;
+using Aegis.Keyboard;
 using Keys = Microsoft.Xna.Framework.Input.Keys;
 
 namespace Aegis.Cards
@@ -13,6 +14,7 @@ namespace Aegis.Cards
         private Deck deck = new Deck();
         private Hand hand;
         private DiscardPile discardPile = new DiscardPile();
+        private ButtonState buttonState = new ButtonState();
 
         public CardManager(GameMap in_Map)
         {
@@ -29,80 +31,47 @@ namespace Aegis.Cards
 
         protected override void UpdateObject(Microsoft.Xna.Framework.GameTime gameTime)
         {
-            var keyboardState = GameState.Keyboard;
-
-                if (keyboardState.IsKeyDown(KeyBindings.Card1))
+            try
+            {
+                if (buttonState.IsKeyPressedOnce(KeyBindings.Card1))
                 {
-                    try
-                    {
-                        Card card = hand.Play(0);
-                        discardPile.graveyard.Add(card);
-                    }
-                    catch (Exception e)
-                    {
-                        //NOOP
-                    }
+                    Card card = hand.Play(0);
+                    discardPile.graveyard.Add(card);
                 }
-                else if (keyboardState.IsKeyDown(KeyBindings.Card2))
+                else if (buttonState.IsKeyPressedOnce(KeyBindings.Card2))
                 {
-                    try
-                    {
-                        Card card = hand.Play(1);
-                        discardPile.graveyard.Add(card);
-                    }
-                    catch (Exception e)
-                    {
-                        //NOOP
-                    }
+                    Card card = hand.Play(1);
+                    discardPile.graveyard.Add(card);
                 }
-                else if (keyboardState.IsKeyDown(KeyBindings.Card3))
+                else if (buttonState.IsKeyPressedOnce(KeyBindings.Card3))
                 {
-                    try
-                    {
-                        Card card = hand.Play(2);
-                        discardPile.graveyard.Add(card);
-                    }
-                    catch (Exception e)
-                    {
-                        //NOOP
-                    }
+                    Card card = hand.Play(2);
+                    discardPile.graveyard.Add(card);
                 }
-                else if (keyboardState.IsKeyDown(KeyBindings.Card4))
+                else if (buttonState.IsKeyPressedOnce(KeyBindings.Card4))
                 {
-                    try
-                    {
-                        Card card = hand.Play(3);
-                        discardPile.graveyard.Add(card);
-                    }
-                    catch (Exception e)
-                    {
-                        //NOOP
-                    }
+                    Card card = hand.Play(3);
+                    discardPile.graveyard.Add(card);
                 }
-                else if (keyboardState.IsKeyDown(KeyBindings.StaticCard))
+                else if (buttonState.IsKeyPressedOnce(KeyBindings.StaticCard))
                 {
                     Card card = hand.Play(Hand.STATIC);
                 }
-                else if (keyboardState.IsKeyDown(KeyBindings.AddCard))
+                else if (buttonState.IsKeyPressedOnce(KeyBindings.AddCard))
                 {
-                    try
-                    {
-                        Card newCard = deck.DrawCard();
-                        hand.AddToHand(newCard);
-                    }
-                    catch (Exception e)
-                    {
-                        //nOOP
-                    }
+                    Card newCard = deck.DrawCard();
+                    hand.AddToHand(newCard);
                 }
-                else if (keyboardState.IsKeyDown(KeyBindings.ReshuffleDeck))
+                else if (buttonState.IsKeyPressedOnce(KeyBindings.ReshuffleDeck))
                 {
-                    if (discardPile.graveyard.Count != 0)
-                    {
-                        deck.ShuffleIn(discardPile.graveyard);
-                        discardPile.graveyard.Clear();
-                    }
+                    deck.ShuffleIn(discardPile.graveyard);
+                    discardPile.graveyard.Clear();
                 }
+            }
+            catch (Exception e)
+            {
+                //Whoops
+            }
         }
 
         private void UpdateView()

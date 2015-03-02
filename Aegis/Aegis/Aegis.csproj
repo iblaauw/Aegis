@@ -81,7 +81,8 @@
     <Compile Include="Cards\DiscardPile.cs" />
     <Compile Include="Cards\Hand.cs" />
     <Compile Include="GameManager.cs" />
-    <Compile Include="KeyBindings.cs" />
+    <Compile Include="Keyboard\ButtonState.cs" />
+    <Compile Include="Keyboard\KeyBindings.cs" />
     <Compile Include="pew.cs" />
     <Compile Include="Player.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

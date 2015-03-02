@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using Keys = Microsoft.Xna.Framework.Input.Keys;
 
-namespace Aegis
+namespace Aegis.Keyboard
 {
     class KeyBindings
     {
