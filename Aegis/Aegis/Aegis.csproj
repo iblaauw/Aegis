@@ -75,8 +75,13 @@
     <Reference Include="System.Net" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Deck.cs" />
+    <Compile Include="Cards\Card.cs" />
+    <Compile Include="Cards\CardManager.cs" />
+    <Compile Include="Cards\Deck.cs" />
+    <Compile Include="Cards\DiscardPile.cs" />
+    <Compile Include="Cards\Hand.cs" />
     <Compile Include="GameManager.cs" />
+    <Compile Include="KeyBindings.cs" />
     <Compile Include="pew.cs" />
     <Compile Include="Player.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -117,6 +122,7 @@
       <Install>true</Install>
     </BootstrapperPackage>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\Microsoft.Xna.GameStudio.targets" />
   <!--

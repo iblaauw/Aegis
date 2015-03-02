@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using GameBase;
+using Aegis.Cards;
 
 namespace Aegis
 {
@@ -36,7 +37,8 @@ namespace Aegis
             map.AddObject(new SomeRocks(300, 250));
             map.AddObject(new SomeRocks(1430, 500));
             map.AddObject(new SomeRocks(1050, 972));
-            map.AddObject(new Deck());
+
+            map.AddObject(new CardManager(map));
 
             return map;
         }
