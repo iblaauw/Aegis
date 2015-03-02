@@ -15,7 +15,7 @@ namespace Aegis.Cards
         {
             Random r = new Random(DateTime.Now.Millisecond);
 
-            for (int i =0; i < 10; ++i)
+            for (int i = 0; i < 10; ++i)
             {
                 Card card;
                 int rand = r.Next(100);
@@ -43,13 +43,22 @@ namespace Aegis.Cards
             this.StaticView = true;
         }
 
-        public List<Card> DrawCards(int count)
+        /// <summary>
+        /// Returns enumerable set of the first <i>count</i> cards drawn from the deck.
+        /// </summary>
+        /// <param name="count">Specifies number of cards to draw.</param>
+        /// <returns></returns>
+        public IEnumerable<Card> DrawCards(int count)
         {
-            List<Card> drawnCards = library.GetRange(0, count);
+            IEnumerable<Card> drawnCards = library.GetRange(0, count);
             library.RemoveRange(0, count);
             return drawnCards;
         }
 
+        /// <summary>
+        /// Removes the top card from the deck and returns a reference to it.
+        /// </summary>
+        /// <returns></returns>
         public Card DrawCard()
         {
             Card drawnCard = library.First();
@@ -57,19 +66,31 @@ namespace Aegis.Cards
             return drawnCard;
         }
 
+        /// <summary>
+        /// Places a single card on top of deck.
+        /// </summary>
+        /// <param name="in_Card">Card to be placed on top.</param>
         public void PutOnTop(Card in_Card)
         {
             library.Insert(0, in_Card);
             //this.sprite = new Sprite2d(library.Count.ToString());
         }
 
-        public void ShuffleIn(List<Card> in_List)
+        /// <summary>
+        /// Shuffles a set of cards into the deck.
+        /// </summary>
+        /// <param name="in_List">Set of cards to be shuffled in.</param>
+        public void ShuffleIn(IEnumerable<Card> in_List)
         {
             library.AddRange(in_List);
             Shuffle(library);
             //this.sprite = new Sprite2d(library.Count.ToString());
         }
 
+        /// <summary>
+        /// Shuffles a single card into the deck.
+        /// </summary>
+        /// <param name="in_Card">Card to be shuffled in.</param>
         public void ShuffleIn(Card in_Card)
         {
             library.Add(in_Card);
@@ -82,7 +103,16 @@ namespace Aegis.Cards
             Shuffle(library);
         }
 
-        static public void Shuffle(List<Card> list)
+        /// <summary>
+        /// Returns true if deck does not contain any cards. O(1).
+        /// </summary>
+        /// <returns></returns>
+        public bool Empty()
+        {
+            return library.Count == 0;
+        }
+
+        private static void Shuffle(List<Card> list)
         {
             Random rand = new Random();
             int n = list.Count;

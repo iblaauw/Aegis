@@ -31,46 +31,42 @@ namespace Aegis.Cards
 
         protected override void UpdateObject(Microsoft.Xna.Framework.GameTime gameTime)
         {
-            try
+            if (buttonState.IsKeyPressedOnce(KeyBindings.Card1))
             {
-                if (buttonState.IsKeyPressedOnce(KeyBindings.Card1))
-                {
-                    Card card = hand.Play(0);
-                    discardPile.graveyard.Add(card);
-                }
-                else if (buttonState.IsKeyPressedOnce(KeyBindings.Card2))
-                {
-                    Card card = hand.Play(1);
-                    discardPile.graveyard.Add(card);
-                }
-                else if (buttonState.IsKeyPressedOnce(KeyBindings.Card3))
-                {
-                    Card card = hand.Play(2);
-                    discardPile.graveyard.Add(card);
-                }
-                else if (buttonState.IsKeyPressedOnce(KeyBindings.Card4))
-                {
-                    Card card = hand.Play(3);
-                    discardPile.graveyard.Add(card);
-                }
-                else if (buttonState.IsKeyPressedOnce(KeyBindings.StaticCard))
-                {
-                    Card card = hand.Play(Hand.STATIC);
-                }
-                else if (buttonState.IsKeyPressedOnce(KeyBindings.AddCard))
+                Card card = hand.Play(0);
+                discardPile.Add(card);
+            }
+            else if (buttonState.IsKeyPressedOnce(KeyBindings.Card2))
+            {
+                Card card = hand.Play(1);
+                discardPile.Add(card);
+            }
+            else if (buttonState.IsKeyPressedOnce(KeyBindings.Card3))
+            {
+                Card card = hand.Play(2);
+                discardPile.Add(card);
+            }
+            else if (buttonState.IsKeyPressedOnce(KeyBindings.Card4))
+            {
+                Card card = hand.Play(3);
+                discardPile.Add(card);
+            }
+            else if (buttonState.IsKeyPressedOnce(KeyBindings.StaticCard))
+            {
+                Card card = hand.Play(Hand.STATIC);
+            }
+            else if (buttonState.IsKeyPressedOnce(KeyBindings.AddCard))
+            {
+                if (!hand.HandFull() && !deck.Empty())
                 {
                     Card newCard = deck.DrawCard();
                     hand.AddToHand(newCard);
                 }
-                else if (buttonState.IsKeyPressedOnce(KeyBindings.ReshuffleDeck))
-                {
-                    deck.ShuffleIn(discardPile.graveyard);
-                    discardPile.graveyard.Clear();
-                }
             }
-            catch (Exception e)
+            else if (buttonState.IsKeyPressedOnce(KeyBindings.ReshuffleDeck))
             {
-                //Whoops
+                deck.ShuffleIn(discardPile.All());
+                discardPile.Clear();
             }
         }
 

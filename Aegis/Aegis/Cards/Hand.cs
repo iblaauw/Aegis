@@ -8,47 +8,100 @@ namespace Aegis.Cards
 {
     class Hand : GameObject
     {
+        #region Statics
         public const int STATIC = -1;
-        private Card staticCard;
-        private List<Card> cardsInHand = new List<Card>();
-        private GameVector startPosition = new GameVector(290, 487);
+        private static GameVector START_POSITION = new GameVector(290, 487);
+        private static int CARD_WIDTH = 50;
+        #endregion
 
+        private Card staticCard;
+        private SortedList<int, Card> cardsInHand = new SortedList<int, Card>();
+
+        /// <summary>
+        /// Initializes Hand object with a specified static card.
+        /// GameMap argument is needed to initialize display of static card.
+        /// </summary>
+        /// <param name="in_staticCard"></param>
+        /// <param name="in_Map"></param>
         public Hand(Card in_staticCard, GameMap in_Map)
         {
+            for (int i = 0; i < 4; ++i)
+                cardsInHand.Add(i, Card.NO_CARD);
+
             staticCard = in_staticCard;
-            staticCard.SetLocation(startPosition.X - 50, startPosition.Y);
+            staticCard.SetLocation(START_POSITION.X - CARD_WIDTH, START_POSITION.Y);
             staticCard.status = STATUS.NORMAL;
             in_Map.AddObject(staticCard);
         }
 
-        public void AddToHand(Card inCard)
+        /// <summary>
+        /// Adds in_Card to hand and displays the card to the screen.
+        /// Throws Exception when hand is already full prior to call.
+        /// </summary>
+        /// <param name="in_Card">Card to add to hand</param>
+        public void AddToHand(Card in_Card)
         {
-            inCard.SetLocation(cardsInHand.Count * 50 + startPosition.X, startPosition.Y);
-            this.cardsInHand.Add(inCard);
-            inCard.status = STATUS.NORMAL;
-            this.map.AddObject(inCard);
+            int cardIndex = cardsInHand.IndexOfValue(Card.NO_CARD);
+            if (cardIndex == -1)
+            {
+                throw new Exception("Hand is full");
+            }
+
+            in_Card.SetLocation(cardIndex * CARD_WIDTH + START_POSITION.X, START_POSITION.Y);
+            this.cardsInHand[cardIndex] = in_Card;
+            in_Card.status = STATUS.NORMAL;
+            this.map.AddObject(in_Card);
         }
 
+        /// <summary>
+        /// Executes the functionality of the card at the specified index in the hand.
+        /// Removes the card from the hand and returns a reference to the played card.
+        /// </summary>
+        /// <param name="index"></param>
+        /// <returns>Returns Card.NO_CARD if index is invalid</returns>
         public Card Play(int index)
         {
-            if (index != STATIC)
+            Card playedCard = Card.NO_CARD;
+
+            if (index == STATIC)
             {
-                Card cardPlayed = cardsInHand[index];
+                playedCard = staticCard;
+            }
+            else if (cardsInHand[index] != Card.NO_CARD)
+            {
+                playedCard = cardsInHand[index];
                 Discard(index);
-                return cardPlayed;
             }
-            else
-            {
-                return staticCard;
-            }
+
+            return playedCard;
         }
 
+        /// <summary>
+        /// Discards the card at the specified index by removing it from the hand.
+        /// Returns a reference to the removed card.
+        /// </summary>
+        /// <param name="index"></param>
+        /// <returns>Returns Card.NO_CARD when index is invalid.</returns>
         public Card Discard(int index)
         {
-            Card discardCard = cardsInHand.ElementAt(index);
-            cardsInHand.RemoveAt(index);
-            this.map.RemoveObject(discardCard);
-            return discardCard;
+            Card discardedCard = cardsInHand[index];
+            cardsInHand[index] = Card.NO_CARD;
+
+            if (discardedCard != Card.NO_CARD)
+                this.map.RemoveObject(discardedCard);
+
+            return discardedCard;
+        }
+
+        /// <summary>
+        /// Returns true if hand has reached capacity. False otherwise.
+        /// This call is O(n) unfortunately for the time being. This <i>should</i> be O(1).
+        /// </summary>
+        /// <returns></returns>
+        public bool HandFull()
+        {
+            // If updated to be O(1) instead of O(n), modify XML documentation.
+            return cardsInHand.IndexOfValue(Card.NO_CARD) == -1;
         }
         
         protected override void LoadObjectContent(Microsoft.Xna.Framework.Content.ContentManager content)

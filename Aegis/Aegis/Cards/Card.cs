@@ -9,7 +9,8 @@ namespace Aegis.Cards
 {
     class Card : GameObject
     {
-        private string name;
+        public const Card NO_CARD = null;
+        protected string name;
         
         public Card(string in_Name)
         {
