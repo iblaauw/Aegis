@@ -80,6 +80,12 @@
     <Compile Include="Cards\Deck.cs" />
     <Compile Include="Cards\DiscardPile.cs" />
     <Compile Include="Cards\Hand.cs" />
+    <Compile Include="Character\Stats\BuffShell.cs" />
+    <Compile Include="Character\Stats\IBuff.cs" />
+    <Compile Include="Character\Stats\Stat.cs" />
+    <Compile Include="Character\Stats\StatAdjuster.cs" />
+    <Compile Include="Character\Stats\StatSet.cs" />
+    <Compile Include="Character\Stats\StatsUtilities.cs" />
     <Compile Include="GameManager.cs" />
     <Compile Include="Keyboard\ButtonState.cs" />
     <Compile Include="Keyboard\KeyBindings.cs" />

@@ -9,11 +9,15 @@ namespace Aegis.Cards
 {
     class Deck : GameObject
     {
+        //TODO: Eric, thoughts on having the deck implemented as a list, but having it in reverse order?
+        //  Right now all we are doing is pushing on the front and pulling off the front -> better if it was the back
+        //  This may be a problem with the seeker cards though
         private List<Card> library = new List<Card>();
             
         public Deck()
         {
             Random r = new Random(DateTime.Now.Millisecond);
+            library = new List<Card>();//LinkedList<Card>();
 
             for (int i = 0; i < 10; ++i)
             {
@@ -35,9 +39,9 @@ namespace Aegis.Cards
             this.StaticView = true;
         }
 
-        public Deck(List<Card> in_Library)
+        public Deck(IEnumerable<Card> in_Library)
         {
-            library = in_Library;
+            library = new List<Card>(in_Library);
             this.sprite = new Sprite2d("Deck");
             this.position = new GameVector(550, 330);
             this.StaticView = true;
@@ -50,9 +54,10 @@ namespace Aegis.Cards
         /// <returns></returns>
         public IEnumerable<Card> DrawCards(int count)
         {
-            IEnumerable<Card> drawnCards = library.GetRange(0, count);
-            library.RemoveRange(0, count);
-            return drawnCards;
+            for (int i = 0; i < count; i++)
+            {
+                yield return DrawCard();
+            }
         }
 
         /// <summary>
@@ -61,7 +66,7 @@ namespace Aegis.Cards
         /// <returns></returns>
         public Card DrawCard()
         {
-            Card drawnCard = library.First();
+            Card drawnCard = library[0];
             library.RemoveAt(0);
             return drawnCard;
         }
@@ -115,7 +120,9 @@ namespace Aegis.Cards
         private static void Shuffle(List<Card> list)
         {
             Random rand = new Random();
+
             int n = list.Count;
+
             while (n > 1)
             {
                 n--;
@@ -124,6 +131,7 @@ namespace Aegis.Cards
                 list[k] = list[n];
                 list[n] = value;
             }
+
         }
 
         protected override void LoadObjectContent(Microsoft.Xna.Framework.Content.ContentManager content)
