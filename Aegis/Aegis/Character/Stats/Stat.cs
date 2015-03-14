@@ -8,10 +8,10 @@ namespace Aegis.Character.Stats
 {
     public class Stat<T> where T : struct
     {
-        T baseVal;
-        T value;
-        bool needsRefresh;
-        LinkedList<StatAdjuster<T>> adjusters;
+        private T baseVal;
+        private T value;
+        private bool needsRefresh;
+        private LinkedList<StatAdjuster<T>> adjusters;
 
         public Stat(T baseValue)
         {
@@ -27,7 +27,7 @@ namespace Aegis.Character.Stats
 
         public void AddAdjuster(StatAdjuster<T> adj)
         {
-            if (adj.IsPermanent)
+            if (!adj.IsPersistent)
                 adj.Adjust(ref baseVal);
             else
                 adjusters.AddLast(adj);

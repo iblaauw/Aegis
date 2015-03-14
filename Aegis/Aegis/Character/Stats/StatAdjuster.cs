@@ -7,8 +7,8 @@ namespace Aegis.Character.Stats
 {
     abstract class StatAdjuster
     {
-        protected IBuff parent;
-        protected StatAdjuster(IBuff parent)
+        protected IModifier parent;
+        protected StatAdjuster(IModifier parent)
         {
             this.parent = parent;
             IsDestroyed = false;
@@ -16,10 +16,7 @@ namespace Aegis.Character.Stats
 
         public bool IsDestroyed { get; protected set; }
 
-        //TODO: consider moving this into IBuff?
-        public abstract bool IsGoodBuff { get; }
-
-        public abstract bool IsPermanent { get; }
+        public abstract bool IsPersistent { get; }
 
         public abstract void Destroy();
     }
@@ -27,9 +24,8 @@ namespace Aegis.Character.Stats
     public abstract class StatAdjuster<T> : StatAdjuster
     {
         private Stat<T> stat;
-        private IBuff parent;
 
-        public StatAdjuster(Stat<T> stat, IBuff parent) : base(parent)
+        public StatAdjuster(Stat<T> stat, IModifier parent) : base(parent)
         {
             this.stat = stat;
         }

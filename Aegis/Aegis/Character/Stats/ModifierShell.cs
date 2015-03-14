@@ -5,13 +5,13 @@ using System.Text;
 
 namespace Aegis.Character.Stats
 {
-    public class BuffShell
+    public class ModifierShell
     {
-        IBuff buff;
+        public IModifier Modifier { get; private set; }
 
-        public BuffShell(IBuff buff)
+        public ModifierShell(IModifier modifier)
         {
-            this.buff = buff;
+            this.Modifier = modifier;
             this.IsDestroyed = false;
         }
 
@@ -20,13 +20,13 @@ namespace Aegis.Character.Stats
         public void Destroy()
         {
             this.IsDestroyed = true;
-            foreach (StatAdjuster adj in buff.GetAdjusters())
+            foreach (StatAdjuster adj in Modifier.GetAdjusters())
                 adj.Destroy();
         }
 
         public void Update()
         {
-            buff.Update();
+            Modifier.Update();
         }
     }
 }

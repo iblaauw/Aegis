@@ -12,7 +12,9 @@ namespace Aegis.Character.Stats
         public Stat<int> Energy { get; private set; }
         public Stat<int> Strength { get; private set; }
 
-        private LinkedList<BuffShell> buffs;
+        private LinkedList<ModifierShell> modifiers;
+
+        private Dictionary<Type, LinkedList<ModifierShell>> modifierMap;
 
         public StatSet()
         {
@@ -21,20 +23,49 @@ namespace Aegis.Character.Stats
             Energy = new Stat<int>(100);
             Strength = new Stat<int>(10);
 
-            buffs = new LinkedList<BuffShell>();
+            modifiers = new LinkedList<ModifierShell>();
+            modifierMap = new Dictionary<Type,LinkedList<ModifierShell>>();
         }
         
-        public void AddBuff(IBuff buff)
+        public void AddBuff(IModifier buff)
         {
-            BuffShell shell = new BuffShell(buff);
-            buffs.AddLast(shell);
+            ModifierShell shell = new ModifierShell(buff);
+            modifiers.AddLast(shell);
+
+            Type type = buff.GetType();
+            LinkedList<ModifierShell> list;
+            if (!modifierMap.TryGetValue(type, out list))
+            {
+                list = new LinkedList<ModifierShell>();
+                modifierMap[type] = list;
+            }
+            list.AddLast(shell);
         }
 
         public void Update()
         {
-            foreach (BuffShell buff in buffs.TraverseRemove(b => b.IsDestroyed))
+            foreach (ModifierShell buff in modifiers.TraverseRemove(b => b.IsDestroyed))
             {
                 buff.Update();
+            }
+        }
+
+        /// <summary>
+        /// Returns a list of all the modifiers which are of type T currently attached to this StatSet
+        /// Takes inheritance into account.
+        /// </summary>
+        public IEnumerable<ModifierShell> GetModifiersForType<T>() where T : class, IModifier
+        {
+            foreach (var keyvalue in modifierMap)
+            {
+                Type type = keyvalue.Key;
+                if (!typeof(T).IsAssignableFrom(type))
+                    continue;
+
+                foreach (ModifierShell mod in keyvalue.Value.TraverseRemove(m => m.IsDestroyed))
+                {
+                    yield return mod;
+                }
             }
         }
     }
