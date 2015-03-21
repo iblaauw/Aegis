@@ -10,6 +10,8 @@ namespace Aegis
     public class Pew : GameObject
     {
         GameVector speed;
+        bool fuse;
+        int fuseLen;
 
         public Pew(float x, float y)
         {
@@ -22,6 +24,9 @@ namespace Aegis
 
             //For collision detection
             this.mask = new RectangleMask(0, 16, 0, 16);
+
+            fuse = false;
+            fuseLen = 100;
         }
 
         protected override void LoadObjectContent(Microsoft.Xna.Framework.Content.ContentManager content)
@@ -37,6 +42,17 @@ namespace Aegis
                 Random rand = new Random();
                 speed.X = rand.Next(-10, 10);
                 speed.Y = rand.Next(-10, 10);
+                fuse = true;
+            }
+
+            if (fuse)
+            {
+                fuseLen--;
+                if (fuseLen == 0)
+                {
+                    map.AddObject(new Explosion(this.position.X, this.position.Y));
+                    map.RemoveObject(this);
+                }
             }
 
             this.position += speed;

@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Aegis.Character.Stats
 {
-    abstract class StatAdjuster
+    public abstract class StatAdjuster
     {
         protected IModifier parent;
         protected StatAdjuster(IModifier parent)
@@ -21,7 +21,7 @@ namespace Aegis.Character.Stats
         public abstract void Destroy();
     }
 
-    public abstract class StatAdjuster<T> : StatAdjuster
+    public abstract class StatAdjuster<T> : StatAdjuster where T : struct
     {
         private Stat<T> stat;
 
