@@ -6,7 +6,7 @@ using GameBase;
 
 namespace Aegis.Cards
 {
-    class Hand : GameObject
+    public class Hand : GameObject
     {
         #region Statics
         public const int STATIC = -1;
@@ -66,10 +66,19 @@ namespace Aegis.Cards
             if (index == STATIC)
             {
                 playedCard = staticCard;
+
+                //Fire event
+                if (OnPlayStatic != null)
+                    OnPlayStatic(staticCard);
             }
             else if (cardsInHand[index] != Card.NO_CARD)
             {
                 playedCard = cardsInHand[index];
+
+                //Fire event
+                if (OnPlay != null)
+                    OnPlay(playedCard);
+
                 Discard(index);
             }
 
@@ -85,7 +94,12 @@ namespace Aegis.Cards
         public Card Discard(int index)
         {
             Card discardedCard = cardsInHand[index];
+
             cardsInHand[index] = Card.NO_CARD;
+
+            //Fire event
+            if (OnDiscard != null)
+                OnDiscard(discardedCard);
 
             if (discardedCard != Card.NO_CARD)
                 this.map.RemoveObject(discardedCard);
@@ -114,5 +128,11 @@ namespace Aegis.Cards
             //NOOP
         }
 
+        /// <summary>
+        /// This does not include when the static is played!
+        /// </summary>
+        public event Action<Card> OnPlay;
+        public event Action<Card> OnPlayStatic;
+        public event Action<Card> OnDiscard;
     }
 }

@@ -7,7 +7,7 @@ using GameBase.Graphics;
 
 namespace Aegis.Cards
 {
-    class Deck : GameObject
+    public class Deck : GameObject
     {
         //TODO: Eric, thoughts on having the deck implemented as a list, but having it in reverse order?
         //  Right now all we are doing is pushing on the front and pulling off the front -> better if it was the back
@@ -68,6 +68,11 @@ namespace Aegis.Cards
         {
             Card drawnCard = library[0];
             library.RemoveAt(0);
+
+            //Fire the event
+            if (OnDraw != null)
+                OnDraw(drawnCard);
+
             return drawnCard;
         }
 
@@ -78,6 +83,10 @@ namespace Aegis.Cards
         public void PutOnTop(Card in_Card)
         {
             library.Insert(0, in_Card);
+
+            if (OnPutOnTop != null)
+                OnPutOnTop(in_Card);
+
             //this.sprite = new Sprite2d(library.Count.ToString());
         }
 
@@ -88,7 +97,7 @@ namespace Aegis.Cards
         public void ShuffleIn(IEnumerable<Card> in_List)
         {
             library.AddRange(in_List);
-            Shuffle(library);
+            Shuffle();
             //this.sprite = new Sprite2d(library.Count.ToString());
         }
 
@@ -99,12 +108,16 @@ namespace Aegis.Cards
         public void ShuffleIn(Card in_Card)
         {
             library.Add(in_Card);
-            Shuffle(library);
+            Shuffle();
             //this.sprite = new Sprite2d(library.Count.ToString());
         }
 
         public void Shuffle()
         {
+            //Fire the event
+            if (OnShuffle != null)
+                OnShuffle();
+
             Shuffle(library);
         }
 
@@ -143,5 +156,9 @@ namespace Aegis.Cards
         {
             //NOOP
         }
+
+        public event Action<Card> OnDraw;
+        public event Action<Card> OnPutOnTop;
+        public event Action OnShuffle;
     }
 }

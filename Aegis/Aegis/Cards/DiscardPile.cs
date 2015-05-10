@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Aegis.Cards
 {
-    class DiscardPile
+    public class DiscardPile
     {
         public List<Card> graveyard = new List<Card>();
 
@@ -18,6 +18,10 @@ namespace Aegis.Cards
         {
             if (in_Card != Card.NO_CARD)
             {
+                //Fire the event
+                if (OnAdd != null)
+                    OnAdd(in_Card);
+
                 graveyard.Add(in_Card);
             }
         }
@@ -31,5 +35,7 @@ namespace Aegis.Cards
         {
             graveyard.Clear();
         }
+
+        public event Action<Card> OnAdd;
     }
 }

@@ -7,7 +7,7 @@ using GameBase.Graphics;
 
 namespace Aegis.Cards
 {
-    class Card : GameObject
+    public class Card : GameObject
     {
         public const Card NO_CARD = null;
         protected string name;
