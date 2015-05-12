@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Aegis.Character.Stats;
 
-namespace Aegis.Character.Stats
+namespace Aegis.Character.Buffs
 {
     public interface IModifier
     {

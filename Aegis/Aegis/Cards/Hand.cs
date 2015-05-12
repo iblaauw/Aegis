@@ -68,16 +68,16 @@ namespace Aegis.Cards
                 playedCard = staticCard;
 
                 //Fire event
-                if (OnPlayStatic != null)
-                    OnPlayStatic(staticCard);
+                if (StaticPlayed != null)
+                    StaticPlayed(staticCard);
             }
             else if (cardsInHand[index] != Card.NO_CARD)
             {
                 playedCard = cardsInHand[index];
 
                 //Fire event
-                if (OnPlay != null)
-                    OnPlay(playedCard);
+                if (CardPlayed != null)
+                    CardPlayed(playedCard);
 
                 Discard(index);
             }
@@ -98,8 +98,8 @@ namespace Aegis.Cards
             cardsInHand[index] = Card.NO_CARD;
 
             //Fire event
-            if (OnDiscard != null)
-                OnDiscard(discardedCard);
+            if (CardDiscarded != null)
+                CardDiscarded(discardedCard);
 
             if (discardedCard != Card.NO_CARD)
                 this.map.RemoveObject(discardedCard);
@@ -131,8 +131,8 @@ namespace Aegis.Cards
         /// <summary>
         /// This does not include when the static is played!
         /// </summary>
-        public event Action<Card> OnPlay;
-        public event Action<Card> OnPlayStatic;
-        public event Action<Card> OnDiscard;
+        public event Action<Card> CardPlayed;
+        public event Action<Card> StaticPlayed;
+        public event Action<Card> CardDiscarded;
     }
 }

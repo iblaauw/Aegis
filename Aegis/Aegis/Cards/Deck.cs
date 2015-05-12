@@ -70,8 +70,8 @@ namespace Aegis.Cards
             library.RemoveAt(0);
 
             //Fire the event
-            if (OnDraw != null)
-                OnDraw(drawnCard);
+            if (CardDrawn != null)
+                CardDrawn(drawnCard);
 
             return drawnCard;
         }
@@ -84,8 +84,8 @@ namespace Aegis.Cards
         {
             library.Insert(0, in_Card);
 
-            if (OnPutOnTop != null)
-                OnPutOnTop(in_Card);
+            if (CardPutOnTop != null)
+                CardPutOnTop(in_Card);
 
             //this.sprite = new Sprite2d(library.Count.ToString());
         }
@@ -115,8 +115,8 @@ namespace Aegis.Cards
         public void Shuffle()
         {
             //Fire the event
-            if (OnShuffle != null)
-                OnShuffle();
+            if (Shuffled != null)
+                Shuffled();
 
             Shuffle(library);
         }
@@ -157,8 +157,8 @@ namespace Aegis.Cards
             //NOOP
         }
 
-        public event Action<Card> OnDraw;
-        public event Action<Card> OnPutOnTop;
-        public event Action OnShuffle;
+        public event Action<Card> CardDrawn;
+        public event Action<Card> CardPutOnTop;
+        public event Action Shuffled;
     }
 }

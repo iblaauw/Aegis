@@ -80,10 +80,14 @@
     <Compile Include="Cards\Deck.cs" />
     <Compile Include="Cards\DiscardPile.cs" />
     <Compile Include="Cards\Hand.cs" />
-    <Compile Include="Character\Stats\IBuff.cs" />
+    <Compile Include="Character\Buffs\GeneralBuff.cs" />
+    <Compile Include="Character\Buffs\IBuff.cs" />
+    <Compile Include="Character\Buffs\OnNextHitBuff.cs" />
+    <Compile Include="Character\Buffs\StackingBuff.cs" />
+    <Compile Include="Character\Buffs\TimedBuff.cs" />
     <Compile Include="Character\Stats\LinearAdjuster.cs" />
-    <Compile Include="Character\Stats\ModifierShell.cs" />
-    <Compile Include="Character\Stats\IModifier.cs" />
+    <Compile Include="Character\Buffs\ModifierShell.cs" />
+    <Compile Include="Character\Buffs\IModifier.cs" />
     <Compile Include="Character\Stats\Stat.cs" />
     <Compile Include="Character\Stats\StatAdjuster.cs" />
     <Compile Include="Character\Stats\StatSet.cs" />

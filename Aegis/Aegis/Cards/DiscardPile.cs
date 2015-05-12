@@ -19,8 +19,8 @@ namespace Aegis.Cards
             if (in_Card != Card.NO_CARD)
             {
                 //Fire the event
-                if (OnAdd != null)
-                    OnAdd(in_Card);
+                if (CardAdded != null)
+                    CardAdded(in_Card);
 
                 graveyard.Add(in_Card);
             }
@@ -36,6 +36,6 @@ namespace Aegis.Cards
             graveyard.Clear();
         }
 
-        public event Action<Card> OnAdd;
+        public event Action<Card> CardAdded;
     }
 }
