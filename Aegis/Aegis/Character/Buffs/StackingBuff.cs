@@ -19,12 +19,12 @@ namespace Aegis.Character.Buffs
 
         protected int MaxStacks { get { return maxStacks; } }
 
-        public override bool AllowOverwrite(IBuff buffOverwriting)
+        public override bool OnOverwrite(IBuff buffOverwriting)
         {
             if (stacks < maxStacks)
                 stacks++;
 
-            return base.AllowOverwrite(buffOverwriting);
+            return base.OnOverwrite(buffOverwriting);
         }
     }
 }

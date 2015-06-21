@@ -25,7 +25,7 @@ namespace Aegis.Character.Buffs
             this.RegistrationSet.stats.RemoveBuff(this);
         }
 
-        public abstract bool AllowOverwrite(IBuff buffOverwriting);
+        public abstract bool OnOverwrite(IBuff buffOverwriting);
 
         public abstract void Update();
 

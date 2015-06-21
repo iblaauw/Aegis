@@ -5,9 +5,9 @@ using System.Text;
 
 namespace Aegis.Character.Buffs
 {
-    public abstract class OnNextHitBuff : TimedBuff
+    public abstract class OnNextCardBuff : TimedBuff
     {
-        public OnNextHitBuff(int time)
+        public OnNextCardBuff(int time)
             : base(time)
         { }
 

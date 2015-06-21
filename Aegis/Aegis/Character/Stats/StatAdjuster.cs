@@ -15,8 +15,16 @@ namespace Aegis.Character.Stats
             IsDestroyed = false;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public bool IsDestroyed { get; protected set; }
 
+        /// <summary>
+        /// If this is false, then this adjuster is applied once, permanently. This case
+        ///     is mainly used for Health
+        /// If this is true, then the adjuster is kept in the system until it says that it is destroyed.
+        /// </summary>
         public abstract bool IsPersistent { get; }
 
         public abstract void Destroy();

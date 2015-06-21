@@ -19,7 +19,7 @@ namespace Aegis.Character.Buffs
 
         protected int CounterMax { get { return counterMax; } }
 
-        public override bool AllowOverwrite(IBuff buffOverwriting)
+        public override bool OnOverwrite(IBuff buffOverwriting)
         {
             counter = counterMax;
             return false;

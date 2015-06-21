@@ -60,7 +60,7 @@ namespace Aegis.Character.Stats
             Type buffType = buff.GetType();
             if (buffMap.ContainsKey(buffType))
             {
-                if (!buffMap[buffType].AllowOverwrite(buff))
+                if (!buffMap[buffType].OnOverwrite(buff))
                     return;
             }
 

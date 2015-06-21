@@ -18,6 +18,7 @@ namespace Aegis.Character.Stats
             baseVal = baseValue;
             value = baseValue;
             needsRefresh = false;
+            adjusters = new LinkedList<StatAdjuster<T>>();
         }
 
         public T Value
